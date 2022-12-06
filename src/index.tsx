@@ -1,19 +1,34 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import axios, { AxiosResponse } from "./axios";
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+const baseUrl = "http://localhost:8080";
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+interface User {
+  name: string;
+  password: string;
+}
+
+let user: User = {
+  name: "ceshi",
+  password: "13444344",
+};
+
+axios({
+  method: "get",
+  url: baseUrl + "/get",
+  params: user,
+}).then((response: AxiosResponse) => {
+  console.log(response, "get");
+  return response.data;
+});
+
+axios({
+  method: "post",
+  url: baseUrl + "/post",
+  headers: {
+    "content-type": "application/json",
+  },
+  data: user,
+}).then((response: AxiosResponse) => {
+  console.log(response, "post");
+  return response.data;
+});

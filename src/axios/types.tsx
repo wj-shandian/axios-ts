@@ -17,6 +17,7 @@ export interface AxiosRequestConfig {
   params?: any;
   headers?: Record<string, any>;
   data?: Record<string, any>;
+  timeout?: number;
 }
 
 // promise 的泛型 T代表此 promise 变成成功态 之后resolve 的值 resolve(value)

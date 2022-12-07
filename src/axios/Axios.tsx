@@ -8,7 +8,7 @@ export default class Axios {
   }
   dispatchRequest<T>(config: AxiosRequestConfig): Promise<AxiosResponse<T>> {
     return new Promise<AxiosResponse<T>>(function (resolve, reject) {
-      let { method = "GET", url = "", params, headers, data } = config;
+      let { method = "GET", url = "", params, headers, data, timeout } = config;
       let request = new XMLHttpRequest();
       if (params) {
         params = qs.stringify(params);
@@ -29,7 +29,8 @@ export default class Axios {
             };
             resolve(response);
           } else {
-            reject("请求失败");
+            // 接口状态码失败
+            reject(`Error: Request failed with status code ${request.status}`);
           }
         }
       };
@@ -41,6 +42,17 @@ export default class Axios {
       let body: string | null = null;
       if (data) {
         body = JSON.stringify(data);
+      }
+      request.onerror = function () {
+        // 网络错误
+        reject("net:ERR_INTERNET_DISCONNECTED");
+      };
+      // 超时错误
+      if (timeout) {
+        request.timeout = timeout;
+        request.ontimeout = function () {
+          reject(`Error: timeout of ${timeout}ms exceeded`);
+        };
       }
       request.send(body);
     });

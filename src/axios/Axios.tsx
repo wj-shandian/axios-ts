@@ -1,10 +1,15 @@
 import { AxiosRequestConfig, AxiosResponse } from "./types";
 import qs from "qs";
+import AxiosInterceptorManager, { Interceptor } from "./AxionsInstanceManager";
 import parseHeaders from "parse-headers";
-export default class Axios {
+export default class Axios<T> {
+  public interceptors = {
+    request: new AxiosInterceptorManager<AxiosRequestConfig>(),
+    response: new AxiosInterceptorManager<AxiosResponse<T>>(),
+  };
   // T 用来限制响应 对象response 里的 data类型
   request<T>(config: AxiosRequestConfig): Promise<AxiosResponse<T>> {
-    return this.dispatchRequest<T>(config);
+    // return this.dispatchRequest<T>(config);
   }
   dispatchRequest<T>(config: AxiosRequestConfig): Promise<AxiosResponse<T>> {
     return new Promise<AxiosResponse<T>>(function (resolve, reject) {

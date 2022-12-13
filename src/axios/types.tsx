@@ -22,7 +22,11 @@ export interface AxiosRequestConfig {
 
 // promise 的泛型 T代表此 promise 变成成功态 之后resolve 的值 resolve(value)
 export interface AxiosInstance {
-  <T = any>(config: AxiosRequestConfig): Promise<T>;
+  <T = any>(config: AxiosRequestConfig): Promise<AxiosResponse<T>>;
+  interceptors: {
+    request: AxiosInstanceManager<AxiosRequestConfig>;
+    response: AxiosInstanceManager<AxiosResponse>;
+  };
 }
 
 // 泛型 T 代表响应体到类型 T=any 意思给个默认值 是any

@@ -19,6 +19,7 @@ export interface AxiosRequestConfig {
   headers?: Record<string, any>;
   data?: Record<string, any>;
   timeout?: number;
+  cancelToken?: any;
 }
 
 // promise 的泛型 T代表此 promise 变成成功态 之后resolve 的值 resolve(value)
@@ -28,6 +29,8 @@ export interface AxiosInstance {
     request: AxiosInterceptorManager<AxiosRequestConfig>;
     response: AxiosInterceptorManager<AxiosResponse>;
   };
+  cancelToken: any;
+  isCancel: any;
 }
 
 // 泛型 T 代表响应体到类型 T=any 意思给个默认值 是any

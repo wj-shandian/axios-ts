@@ -21,6 +21,13 @@ axios.interceptors.request.use(
     return config;
   }
 );
+axios.interceptors.request.use(
+  (config: AxiosRequestConfig): AxiosRequestConfig => {
+    console.log(config, "--");
+    config.headers && (config.headers.name += "2");
+    return config;
+  }
+);
 
 axios.interceptors.response.use((response: AxiosResponse): AxiosResponse => {
   console.log(response, "response");
@@ -88,3 +95,31 @@ axios({
   .catch((err) => {
     console.log(err, "code");
   });
+
+// 取消
+let cancelToken = axios.cancelToken;
+let isCancel = axios.isCancel;
+const source = cancelToken.source();
+
+axios({
+  method: "post",
+  url: baseUrl + "/post",
+  headers: {
+    "content-type": "application/json",
+  },
+  cancelToken: source.token,
+  // timeout: 2000,
+  data: user,
+})
+  .then((response: AxiosResponse) => {
+    console.log(response, "post");
+    return response.data;
+  })
+  .catch((err) => {
+    if (isCancel(err)) {
+      console.log("取消了", err);
+    } else {
+      console.log(err);
+    }
+  });
+source.cancel("用户取消了");

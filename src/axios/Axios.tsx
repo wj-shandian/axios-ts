@@ -2,6 +2,7 @@ import { AxiosRequestConfig, AxiosResponse } from "./types";
 import qs from "qs";
 import AxiosInterceptorManager, { Interceptor } from "./AxiosInstanceManager";
 import parseHeaders from "parse-headers";
+
 export default class Axios<T> {
   public interceptors = {
     request: new AxiosInterceptorManager<AxiosRequestConfig>(),
@@ -87,6 +88,13 @@ export default class Axios<T> {
         request.ontimeout = function () {
           reject(`Error: timeout of ${timeout}ms exceeded`);
         };
+      }
+      // 取消
+      if (config.cancelToken) {
+        config.cancelToken.then((message: any) => {
+          reject(message);
+          request.abort(); // ajax 取消请求
+        });
       }
       request.send(body);
     });

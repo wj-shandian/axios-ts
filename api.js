@@ -10,7 +10,7 @@ app.use(function (req, res, next) {
     "Access-Control-Allow-Origin": "http://localhost:3000",
     "Access-Control-Allow-Credential": true,
     "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type,name",
+    "Access-Control-Allow-Headers": "*",
   });
   if (res.method === "OPTIONS") {
     return res.sendStatus(200);

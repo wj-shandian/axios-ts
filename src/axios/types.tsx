@@ -1,3 +1,4 @@
+import AxiosInterceptorManager from "./AxiosInstanceManager";
 export type Methods =
   | "get"
   | "GET"
@@ -24,8 +25,8 @@ export interface AxiosRequestConfig {
 export interface AxiosInstance {
   <T = any>(config: AxiosRequestConfig): Promise<AxiosResponse<T>>;
   interceptors: {
-    request: AxiosInstanceManager<AxiosRequestConfig>;
-    response: AxiosInstanceManager<AxiosResponse>;
+    request: AxiosInterceptorManager<AxiosRequestConfig>;
+    response: AxiosInterceptorManager<AxiosResponse>;
   };
 }
 

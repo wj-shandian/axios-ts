@@ -1,5 +1,5 @@
 interface OnFulfilled<V> {
-  (value: V): V | Promise<V>;
+  (value: V): V | undefined | null | Promise<V>;
 }
 interface OnReject {
   (error: any): any;
@@ -10,13 +10,13 @@ export interface Interceptor<V> {
   onRejected?: OnReject; // 失败回调
 }
 
-export interface AxiosInterceptorManager<V> {
-  use(
-    onFulfilled?: (value: V) => V | Promise<V>,
-    onRejected?: (error: any) => any
-  ): number;
-  eject(id: number): void;
-}
+// export interface AxiosInterceptorManager<V> {
+//   use(
+//     onFulfilled?: (value: V) => V | Promise<V>,
+//     onRejected?: (error: any) => any
+//   ): number;
+//   eject(id: number): void;
+// }
 // T 可能是 AxiosRequestConfig 也可能是 AxiosResponse
 export default class InterceptorManager<V> {
   public interceptors: Array<Interceptor<V> | null> = [];
